@@ -1,0 +1,19 @@
+/*
+Colorblind safe color palette from colorbrewer2.org.
+#d7191c - Red
+#fdae61 - Orange
+#ffffbf - Off Yellow
+#abd9e9 - Light Blue
+#2c7bb6 - Blue
+#525252 - Dark Grey
+*/
+
+body {
+  background-color: #abd9e9;
+  color: #525252;
+  text-align: center;
+}
+
+h1 {
+  color: #525252;
+}
