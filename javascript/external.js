@@ -1,7 +1,7 @@
 let username = window.prompt("Please enter your name:")
 
 if (username) {
-  document.write("Hello, welcome "+ username + "!");
+  document.getElementById("welcome-user").textContent=("Hello, welcome "+ username + "!");
 } else {
-  document.write("Hello, welcome guest!")
+  document.getElementById("welcome-user").textContent=("Hello, welcome guest!");
 }
