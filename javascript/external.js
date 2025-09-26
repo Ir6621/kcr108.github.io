@@ -7,7 +7,7 @@
 // }
 var webmaps = [
   ["Oil Spill Toolkit", "https://www.glo.texas.gov", "The oil spill toolkit developed by Enterprise Technology Solutions is neat."],
-  ["Texas Ecosystems Analytical Mapper", "http://tpwd.texas.gov/gis/team/", "The Texas Parks and Wildlife’s Landscape Ecology program is great."]
+  ["Texas Ecosystems Analytical Mapper", "http://tpwd.texas.gov/gis/team/", "The Texas Parks and Wildlife's Landscape Ecology program is great."]
 ];
 
 
@@ -25,15 +25,12 @@ document.write(welcome());
 function webmap_table()
 {
     document.write("<table width=100%>");
-    for (var row=0; row < webmaps.length; row++)
-    {
-    document.write("<tr>");
-    for (var column=0; column < webmaps[0].length; column++)
-    {
-      document.write("<td>" + webmaps[row][column] + "</td>");
+    for (let r = 0; r < webmaps.length * 2; r++) {
+      const i = Math.floor(r / 2);
+      if (r % 2 === 0) {
+        document.write("<tr><td>" + webmaps[i][0] + "</td><td>" + webmaps[i][1] + "</td></tr>");
+      } else {
+        document.write("<tr><td colspan='2'>" + webmaps[i][2] + "</td></tr>");
+      }
     }
-    document.write("</tr>");
   }
-  document.write("</table>");
-  return "";
-}

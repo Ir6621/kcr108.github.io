@@ -60,3 +60,6 @@ h1 {
   font-size: 25px;
   position: relative;
 }
+tr:nth-child(even) td {
+  padding-bottom: 30px;
+}
