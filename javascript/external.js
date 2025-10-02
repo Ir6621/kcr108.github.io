@@ -33,4 +33,5 @@ function webmap_table()
         document.write("<tr><td colspan='2'>" + webmaps[i][2] + "</td></tr>");
       }
     }
+    document.write("</table>");
   }
