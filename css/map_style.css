@@ -3,3 +3,12 @@
 {
 background: yellow;
 }
+.w-popup .leaflet-popup-content-wrapper {
+  background-color: #ffffe6;
+  border: 5px solid #000000;
+  color: #333;
+  border-radius: 10px;
+}
+.w-popup .leaflet-popup-tip {
+  background-color: #b3b3cc;
+}

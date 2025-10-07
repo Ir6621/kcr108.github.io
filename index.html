@@ -72,6 +72,46 @@
         ]);
         mymap.fitBounds(poly.getBounds());
       }).addTo(mymap);
+      var SevenWonders = [
+        {name: "Taj Mahal", lat:27.174961, lng:78.042385, img: "images/India.jpeg", flag: "images/INflag.png",
+        desc: `The Taj Mahal is a famous ivory-white marble mausoleum in Agra, India,
+        built by Mughal emperor Shah Jahan as a tomb for his beloved wife, Mumtaz Mahal.`},
+        {name: "Great Wall of China", lat: 40.334245, lng: 116.477652, img: "images/great-wall-of-china-facts-3.jpg", flag:"images/CNflag.png",
+        desc: `The Great Wall of China is a series of ancient fortifications, a UNESCO World Heritage Site,
+        and one of the world's most iconic landmarks known for its vast scale, historic significance, and stunning views.`},
+        {name: "Petra", lat: 30.328611, lng: 35.441944, img: "images/petra.jpeg", flag:"images/JOflag.png",
+        desc: `Petra is a historic, rock-carved city in Jordan, known as the Rose City for its red sandstone.`},
+        {name: "Christ the Redeemer", lat: -22.951389, lng: -43.2108334, img:"images/brazil.jpeg", flag:"images/BRflag.png",
+        desc: `Christ the Redeemer is an iconic, towering Art Deco statue of Jesus Christ with outstretched arms,
+        situated atop Corcovado Mountain in Rio de Janeiro, Brazil.`},
+        {name: "Machu Picchu", lat: -13.163056, lng: -72.545556, img:"images/peru.jpeg", flag:"images/PEflag.png",
+        desc: `Machu Picchu is a 15th-century Inca citadel, known as the city in the clouds, located in the Peruvian Andes.`},
+        {name: "Chichen Itza Pyramid", lat: 20.682778, lng: -88.569167, img: "images/mexico.jpeg", flag:"images/MXflag.png",
+        desc: `Chichen Itza is a famous Mayan archaeological site in Mexico's Yucatan Peninsula,
+        renowned for its well-preserved architecture and historical significance as a former
+        regional capital and religious center.`},
+        {name: "The Colosseum in Rome", lat: 41.890169, lng: 12.492269, img:"images/rome.jpeg", flag:"images/ITflag.png",
+        desc: `The Colosseum is an elliptical amphitheatre in the centre of the city of Rome, Italy, just east of the Roman Forum.
+        It is the largest ancient amphitheatre ever built, and is the largest standing amphitheatre in the world.`}
+      ];
+      SevenWonders.forEach(function(w) {
+        var icon = L.icon({
+          iconUrl: w.flag,
+          iconSize: [34, 24],
+          iconAnchor: [22, 44],
+          popupAnchor: [0, -46]
+        });
+        var popupHtml =
+          '<div style="text-align:center; max-width:200px">' +
+            '<strong>' + w.name + '</strong><br>' +
+            '<img src="' + w.img + '" alt="' + w.name + '" style="width:90px; margin:4px 0;"><br>' +
+            '<p style="font-size:0.75em; line-height:1.1em;">' + w.desc + '</p>' +
+          '</div>';
+
+        L.marker([w.lat, w.lng], { icon: icon })
+         .bindPopup(popupHtml, {className: 'w-popup'})
+         .addTo(mymap);
+      });
       // var marker = L.marker([51.5, -0.09]).addTo(mymap);
       // var circle = L.circle([51.508, -0.11], { color: 'red', fillColor: '#f03',fillOpacity: 0.5, radius: 500}).addTo(mymap);
       // var polygon = L.polygon([[51.509, -0.08], [51.503, -0.06], [51.51, -0.047]]).addTo(mymap);
