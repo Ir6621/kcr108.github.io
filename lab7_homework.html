@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Toronto Crime </title>
+  <link rel = "stylesheet" href = "https://js.arcgis.com/4.21/esri/themes/light/main.css"/>
+  <script src = "https://js.arcgis.com/4.21/"> </script>
+  <style>
+   html, body, #viewDiv {
+     padding: 0;
+     margin: 0;
+     height: 100%;
+     width: 100%;
+
+    .dropdown {
+      position: absolute;
+      top: 10px;
+      left: 60px;
+      z-index: 10;
+
+    }
+    .dropbtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fffff;
+      min-width: 200px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 11;
+    }
+    .dropdown-content a {
+      color: black;
+      padding: 6px 10px;
+      text-decoration: none;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .dropdown:hover .dropbtn {
+      background-color: #3e8e41;
+    }
+    #title {
+      position: absolute;
+      font-size: 25px;
+      top: 10px;
+      right: 10px;
+      background: white;
+      padding: 6px 10px;
+      font-weight: bold;
+      border-radius: 4px;
+      z-index: 10;
+    }
+
+    #footer {
+      position: absolute;
+      bottom: 5px;
+      right: 15px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 4px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+      z-index: 10;
+    }
+    #queryControls { 
+    position: absolute;
+    top: 60px;
+    left: 1200px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    z-index: 20;
+  }
+    #queryControls select, #queryControls button {
+    margin: 5px;
+  }
+</style>
+<script>
+require([
+  "esri/Map","esri/views/MapView","esri/layers/TileLayer","esri/layers/FeatureLayer",],
+  function(Map, MapView, TileLayer, FeatureLayer,) {
+
+  var baseTileLayer = new TileLayer({
+    url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"
+  });
+
+  var crimeLayer = new FeatureLayer({
+    url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/toronto_crime_polygons/FeatureServer/0",
+    outFields: ["*"],
+  });
+  var map = new Map({
+    basemap: "streets-navigation-vector", //Easiest basemap for City specific maps
+    layers: [baseTileLayer, crimeLayer]
+  });
+  var view = new MapView({
+    container: "viewDiv",
+    map: map,
+    zoom: 10,
+    center: [-79.3815, 43.6505], //Toronto coordinates
+    spatialReference: { wkid: 3857 } //Specific Spatial reference needed for feature Layer
+  });
+  document.getElementById("runQuery").addEventListener("click", function() { //Takes the user input for query
+  var crime = document.getElementById("crimeType").value;
+  var year = document.getElementById("yearSelect").value;
+  var threshold = document.getElementById("threshold").value;
+  var fieldName = crime.toUpperCase() + "_" + year;
+  var queryExpression = fieldName + " > " + threshold;
+  console.log("Query applied:", queryExpression);
+  crimeLayer.definitionExpression = queryExpression;
+  crimeLayer.queryExtent().then(function(response) {
+    if (response.extent) {
+      view.goTo(response.extent.expand(1.2), { duration: 1500 });
+    }
+  });
+  });
+  });
+</script>
+</head>
+<body>
+  <div class="dropdown">
+    <button class="dropbtn">Other Maps</button> <!-- all other task dropdown-->
+    <div class="dropdown-content">
+      <a href="https://ir6621.github.io/kcr108.github.io/simple_mapping.html" target="_blank">Simple Mapping</a>
+      <a href="https://ir6621.github.io/kcr108.github.io/tile_layer.html" target="_blank">Tile Layer</a>
+      <a href="https://ir6621.github.io/kcr108.github.io/dynamic_layers.html" target="_blank">Dynamic Layers</a>
+      <a href="https://ir6621.github.io/kcr108.github.io/on_event.html" target="_blank">On Event</a>
+      <a href="https://ir6621.github.io/kcr108.github.io/basemap_gallery.html" target="_blank">Basemap Gallery</a>
+      <a href="https://ir6621.github.io/kcr108.github.io/query_task.html" target="_blank">Query Task</a>
+    </div>
+    <div id="queryControls">
+      <label for="crimeType">Crime Type:</label>
+      <select id="crimeType"> <!-- Dropdown menu for query for crime type -->
+        <option value="ASSAULT">Assault</option>
+        <option value="AUTOTHEFT_RATE">Auto Theft</option>
+        <option value="BREAKENTER">Break and Enter</option>
+      </select>
+      <br>
+      <label for="yearSelect">Year:</label>
+      <select id="yearSelect"> <!-- Gives user ability to select by year -->
+        <option value="2014">2014</option>
+        <option value="2015">2015</option>
+        <option value="2016">2016</option>
+        <option value="2017">2017</option>
+      </select>
+      <br>
+      <label for="threshold">Minimum # of incidents:</label>
+      <input type="number" id="threshold" value="50" min="0">
+      <br>
+      <button id="runQuery">Run Query</button>
+  </div>
+  </div>
+  <div id="viewDiv"></div>
+  <div id="title">Toronto Crime Map (2014–2017)</div> <!--Title-->
+  <div id="footer">© City of Toronto Open Data</div> <!--Copyright-->
+</body>
+</html>
